@@ -2,12 +2,14 @@
   font-size: 25px;
   color: var(--primary-text-color);
   font-weight: 500;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .contact_item {
-  margin-left: 20px;
+  margin-left: 0;
 }
 
 .btn {
@@ -18,8 +20,8 @@
   cursor: pointer;
   letter-spacing: 0.04em;
   color: var(--primary-text-color);
-  background:var(--timing-function);
-  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.15);
+  background: #dbdce8;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   min-width: 80px;
   height: 35px;

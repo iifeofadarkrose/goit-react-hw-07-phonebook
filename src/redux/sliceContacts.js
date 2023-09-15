@@ -1,31 +1,63 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
+import { fetchContacts, fetchDeleteContact, fetchAddContact } from './apiOperations';
 
-const sliceContacts = createSlice({
+const contactsSlice = createSlice({
     name: 'contacts',
     initialState: {
-        contacts: [
-            { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-            { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-            { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-            { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-        ]
+        contacts: [],
+        isLoading: false,
+        error: null,
     },
-    reducers: {
-        formAddContact(state, action) {
-            state.contacts.unshift({
-                id: nanoid(10),
-                name: action.payload.name,
-                number: action.payload.number,
+    reducers: {},
+    extraReducers: builder => {
+        builder
+            .addCase(fetchContacts.pending, (state) => {
+                state.isLoading = true;
             })
-        },
-        deleteContact(state, action) {
-            state.contacts = state.contacts
-            .filter(contact => contact.id !== action.payload.id)
-        },
 
-    },
+            .addCase(fetchContacts.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.contacts = action.payload;
+                state.error = null;
+            })
+
+            .addCase(fetchContacts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(fetchDeleteContact.pending, (state) => {
+                state.isLoading = true;
+            })
+
+            .addCase(fetchDeleteContact.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.contacts = state.contacts = state.contacts.filter(contact => contact.id !== action.payload.id);
+                state.error = null;
+            })
+
+            .addCase(fetchDeleteContact.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(fetchAddContact.pending, (state) => {
+                state.isLoading = true;
+            })
+
+            .addCase(fetchAddContact.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.contacts.unshift(action.payload);
+                state.error = null;
+            })
+            
+            .addCase(fetchAddContact.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+    }
 });
 
-export const { formAddContact, deleteContact } = sliceContacts.actions;
-export const contactsReducer = sliceContacts.reducer;
+export const { formAddContact, deleteContact } = contactsSlice.actions;
+export const contactsReducer = contactsSlice.reducer;
